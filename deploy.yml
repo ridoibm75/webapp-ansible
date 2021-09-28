@@ -1,7 +1,6 @@
 - name: "Apache installation using docker"
   hosts: prod
-  vars: 
-    ansible_sudo_pass: admin
+  become: true
   pre_tasks: 
   - name: install EPAL repo
     package: 
@@ -9,11 +8,12 @@
       state: present
     when:
       ansible_distribution == "CentOS" 
+  - name: download pip script
+    get_url:
+      url: https://bootstrap.pypa.io/pip/2.7/get-pip.py
+      dest: /tmp/get-pip.py
   - name: install python-pip
-    yum: 
-      name: python-pip
-      state: present
-      update_cache: yes      
+    command: python2.7 /tmp/get-pip.py
   - name: install docker python
     pip: 
       name: docker
