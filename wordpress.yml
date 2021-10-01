@@ -1,0 +1,12 @@
+---
+- hosts: prod
+  become: true
+  vars: 
+    system_user: admin
+  pre_tasks: 
+    - name: creer www-data user
+      user: 
+        name: www-data
+        state: present
+  roles:
+    - { role: ansible-role-containerized-wordpress } 
